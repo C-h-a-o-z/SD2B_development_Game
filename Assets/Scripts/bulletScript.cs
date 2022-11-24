@@ -27,6 +27,11 @@ public class bulletScript : MonoBehaviour
         {
             Debug.Log("boom");
             GameObject spawnExplosion = Instantiate(explosion, transform.position, Quaternion.identity);
+
+        }
+        if (collision.CompareTag("Enemy"))
+        {
+            collision.GetComponent<Enemy>().takeDamage();
         }
         Destroy(gameObject);
     }

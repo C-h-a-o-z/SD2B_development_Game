@@ -6,26 +6,45 @@ public class Enemy : MonoBehaviour
 {
     public float speed = 5;
     float dirX = 1;
+    public float hp = 2;
+    bool isAlive = true;
 
     // Update is called once per frame
     void Update()
     {
-        transform.Translate(transform.right * dirX * speed * Time.deltaTime);
+        if (isAlive)
+        {
 
-        RaycastHit2D hit = Physics2D.Raycast(transform.position, transform.right * dirX, 0.6f);
+            transform.Translate(transform.right * dirX * speed * Time.deltaTime);
 
-        Debug.DrawRay(transform.position, transform.right * 0.6f * dirX, Color.blue);
+            RaycastHit2D hit = Physics2D.Raycast(transform.position, transform.right * dirX, 0.6f);
 
-        if (hit.collider != null)
-        {    
-            if (hit.collider.CompareTag("Player"))
+            Debug.DrawRay(transform.position, transform.right * 0.6f * dirX, Color.blue);
+
+            if (hit.collider != null)
             {
-                hit.transform.position = new Vector2(0, 0);
-            }
-            else if (hit.collider.CompareTag("Obstacle"))
-            {
-                dirX = dirX * -1;
+                if (hit.collider.CompareTag("Player"))
+                {
+                    hit.transform.position = new Vector2(0, 0);
+                }
+                else if (hit.collider.CompareTag("Obstacle"))
+                {
+                    dirX = dirX * -1;
+                }
             }
         }
+    }
+    public void takeDamage()
+    {
+        --hp;
+        if (hp <= 0)
+        {
+            die();
+        }
+
+    }
+    void die()
+    {
+        isAlive = false;
     }
 }

@@ -15,4 +15,13 @@ public class explosionScript : MonoBehaviour
             Destroy(gameObject);
         }
     }
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        Debug.Log(collision);
+        if (collision.CompareTag("Enemy"))
+        {
+            collision.GetComponent<Enemy>().hp = 0;
+            collision.GetComponent<Enemy>().takeDamage();
+        }
+    }
 }
