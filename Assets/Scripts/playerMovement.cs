@@ -13,6 +13,8 @@ public class playerMovement : MonoBehaviour
 	const float k_GroundedRadius = .2f;
 	public int jumpAmount = 1;
 	private Rigidbody2D rigBody2D;
+	private float facing = 1;
+	public GameObject bullet;
 
     private void Awake()
     {
@@ -21,7 +23,7 @@ public class playerMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        float dirX = Input.GetAxis("Horizontal");
+        float dirX = Input.GetAxisRaw("Horizontal");
         transform.Translate(transform.right * dirX * speed * Time.deltaTime);
 
 		if (Input.GetKeyDown(KeyCode.Space))
@@ -42,7 +44,21 @@ public class playerMovement : MonoBehaviour
 				Debug.Log("NoRemainingJumps");
             }
 
+			}
+
+			if (dirX < 0 || dirX > 0)
+            {
+				facing = dirX;
+            }
+			
+
+        
+		if (Input.GetKeyDown(KeyCode.Mouse0))
+        {
+			GameObject spawnedBullet = Instantiate(bullet, transform.position, Quaternion.identity);
+			spawnedBullet.GetComponent<bulletScript>().direction = facing;
         }
+
     }
 	private void FixedUpdate()
 	{
