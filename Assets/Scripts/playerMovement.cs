@@ -23,8 +23,7 @@ public class playerMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        float dirX = Input.GetAxisRaw("Horizontal");
-        transform.Translate(transform.right * dirX * speed * Time.deltaTime);
+
 
 		if (Input.GetKeyDown(KeyCode.Space))
         {
@@ -46,10 +45,7 @@ public class playerMovement : MonoBehaviour
 
 			}
 
-			if (dirX < 0 || dirX > 0)
-            {
-				facing = dirX;
-            }
+
 			
 
         
@@ -57,13 +53,23 @@ public class playerMovement : MonoBehaviour
         {
 			GameObject spawnedBullet = Instantiate(bullet, transform.position, Quaternion.identity);
 			spawnedBullet.GetComponent<bulletScript>().direction = facing;
+			spawnedBullet.transform.position = new Vector2(spawnedBullet.transform.position.x + facing, spawnedBullet.transform.position.y);
         }
 
     }
 	private void FixedUpdate()
 	{
+		float dirX = Input.GetAxisRaw("Horizontal");
+		transform.Translate(transform.right * dirX * speed * Time.deltaTime);
+
+		if (dirX < 0 || dirX > 0)
+		{
+			facing = dirX;
+		}
+
 		bool wasGrounded = onGround;
 		onGround = false;
+
 		Collider2D[] colliders = Physics2D.OverlapCircleAll(groundCheck.position, k_GroundedRadius, m_WhatIsGround);
 		for (int i = 0; i < colliders.Length; i++)
 		{

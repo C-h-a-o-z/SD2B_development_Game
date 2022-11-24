@@ -16,9 +16,16 @@ public class Enemy : MonoBehaviour
 
         Debug.DrawRay(transform.position, transform.right * 0.6f * dirX, Color.blue);
 
-        if (hit.collider.CompareTag("Wall"))
-        {
-            dirX = dirX * -1;
+        if (hit.collider != null)
+        {    
+            if (hit.collider.CompareTag("Player"))
+            {
+                hit.transform.position = new Vector2(0, 0);
+            }
+            else if (hit.collider.CompareTag("Obstacle"))
+            {
+                dirX = dirX * -1;
+            }
         }
     }
 }

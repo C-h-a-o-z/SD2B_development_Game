@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: -5028931130799979251}
   - component: {fileID: 8148978139312787661}
   m_Layer: 0
-  m_Name: Bullet
+  m_Name: ExplodingBullet
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -77,7 +77,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: -2413806693520163455, guid: a86470a33a6bf42c4b3595704624658b, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.9811321, g: 0.7349235, b: 0.7349235, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -102,6 +102,8 @@ MonoBehaviour:
   lifeTime: 3
   bulletSpeed: 15
   direction: 1
+  exploding: 1
+  explosion: {fileID: 272136282376298861, guid: 76262e174c1a63e45836a5b70e16df59, type: 3}
 --- !u!61 &-5028931130799979251
 BoxCollider2D:
   m_ObjectHideFlags: 0

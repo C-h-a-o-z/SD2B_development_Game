@@ -7,6 +7,8 @@ public class bulletScript : MonoBehaviour
     public float lifeTime = 3;
     public float bulletSpeed = 15;
     public float direction = 1;
+    public bool exploding;
+    public GameObject explosion;
     // Start is called before the first frame update
     void Start()
     {
@@ -17,5 +19,15 @@ public class bulletScript : MonoBehaviour
     void Update()
     {
         transform.Translate(transform.right * direction * bulletSpeed * Time.deltaTime);
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (exploding == true)
+        {
+            Debug.Log("boom");
+            GameObject spawnExplosion = Instantiate(explosion, transform.position, Quaternion.identity);
+        }
+        Destroy(gameObject);
     }
 }

@@ -227,8 +227,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6479606}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.0128, y: -4.3218, z: 0}
-  m_LocalScale: {x: 17.681587, y: 1.3287009, z: 1}
+  m_LocalPosition: {x: -1.7737, y: -4.3218, z: 0}
+  m_LocalScale: {x: 21.296968, y: 1.3287009, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -333,7 +333,7 @@ GameObject:
   - component: {fileID: 581309313}
   m_Layer: 0
   m_Name: Enemy
-  m_TagString: Obstacle
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -459,7 +459,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 581309308}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 54d6d055080918a419aa568da5bea0b2, type: 3}
   m_Name: 
@@ -511,7 +511,7 @@ GameObject:
   - component: {fileID: 1024523914}
   m_Layer: 0
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -652,7 +652,7 @@ MonoBehaviour:
   speed: 10
   jumpForce: 400
   jumpAmount: 1
-  bullet: {fileID: 5399904710680584, guid: 75de70dc6c0f2fa408595215a3fc1b87, type: 3}
+  bullet: {fileID: 5399904710680584, guid: d59e67bde563ed9489aefa33a1b82e3a, type: 3}
 --- !u!1 &1125781146
 GameObject:
   m_ObjectHideFlags: 0
