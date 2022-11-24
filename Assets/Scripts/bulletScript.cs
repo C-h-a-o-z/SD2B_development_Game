@@ -34,5 +34,6 @@ public class bulletScript : MonoBehaviour
             collision.GetComponent<Enemy>().takeDamage();
         }
         Destroy(gameObject);
+        //USE CIRCLE COLLIDERSSSSSS
     }
 }

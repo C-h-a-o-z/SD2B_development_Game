@@ -8,7 +8,16 @@ public class Enemy : MonoBehaviour
     float dirX = 1;
     public float hp = 2;
     bool isAlive = true;
+    public float startingDir = 1;
 
+    Animator anim;
+    //root motion for animation
+    //get animation from ch
+    private void Start()
+    {
+        dirX = startingDir;
+        anim = GetComponentInChildren<Animator>();
+    }
     // Update is called once per frame
     void Update()
     {
@@ -46,5 +55,9 @@ public class Enemy : MonoBehaviour
     void die()
     {
         isAlive = false;
+        anim.SetBool("IsAlive", isAlive);
+        GetComponent<BoxCollider2D>().enabled = false;
+        GetComponent<Rigidbody2D>().gravityScale = 0;
+        Destroy(gameObject, 1.5f);
     }
 }
