@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 3666151064203596398}
   - component: {fileID: 1960665962846422400}
   - component: {fileID: 7102547389518022726}
-  - component: {fileID: -5028931130799979251}
+  - component: {fileID: 3494408952096468789}
   - component: {fileID: 8148978139312787661}
   m_Layer: 0
   m_Name: ExplodingBullet
@@ -104,8 +104,8 @@ MonoBehaviour:
   direction: 1
   exploding: 1
   explosion: {fileID: 272136282376298861, guid: 76262e174c1a63e45836a5b70e16df59, type: 3}
---- !u!61 &-5028931130799979251
-BoxCollider2D:
+--- !u!58 &3494408952096468789
+CircleCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -118,18 +118,8 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1, y: 1}
-    newSize: {x: 1, y: 1}
-    adaptiveTilingThreshold: 0.5
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1, y: 1}
-  m_EdgeRadius: 0
+  m_Radius: 0.5
 --- !u!50 &8148978139312787661
 Rigidbody2D:
   serializedVersion: 4
