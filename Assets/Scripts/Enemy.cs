@@ -9,6 +9,8 @@ public class Enemy : MonoBehaviour
     public float hp = 2;
     bool isAlive = true;
     public float startingDir = 1;
+    private GameObject scoreCounter;
+
 
     Animator anim;
     //root motion for animation
@@ -17,6 +19,7 @@ public class Enemy : MonoBehaviour
     {
         dirX = startingDir;
         anim = GetComponentInChildren<Animator>();
+        scoreCounter = GameObject.Find("Player");
     }
     // Update is called once per frame
     void Update()
@@ -54,6 +57,7 @@ public class Enemy : MonoBehaviour
     }
     void die()
     {
+        scoreCounter.GetComponent<Score>().scoreAdd();
         isAlive = false;
         anim.SetBool("IsAlive", isAlive);
         GetComponent<BoxCollider2D>().enabled = false;
