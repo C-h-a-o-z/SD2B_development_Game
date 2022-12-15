@@ -25,7 +25,7 @@ public class playerMovement : MonoBehaviour
     {
 
 
-		if (Input.GetKeyDown(KeyCode.Space))
+		if (Input.GetKeyDown(KeyCode.Y))
         {
 			if (onGround == true)
 			{
@@ -49,7 +49,7 @@ public class playerMovement : MonoBehaviour
 			
 
         
-		if (Input.GetKeyDown(KeyCode.Mouse0))
+		if (Input.GetKeyDown(KeyCode.X))
         {
 			GameObject spawnedBullet = Instantiate(bullet, transform.position, Quaternion.identity);
 			spawnedBullet.GetComponent<bulletScript>().direction = facing;
