@@ -10,6 +10,7 @@ public class Enemy : MonoBehaviour
     bool isAlive = true;
     public float startingDir = 1;
     private GameObject scoreCounter;
+    Vector2 startloc;
 
 
     Animator anim;
@@ -20,6 +21,7 @@ public class Enemy : MonoBehaviour
         dirX = startingDir;
         anim = GetComponentInChildren<Animator>();
         scoreCounter = GameObject.Find("Player");
+        startloc = transform.localPosition;
     }
     // Update is called once per frame
     void Update()
@@ -37,7 +39,7 @@ public class Enemy : MonoBehaviour
             {
                 if (hit.collider.CompareTag("Player"))
                 {
-                    hit.transform.position = new Vector2(0, 0);
+                    hit.collider.GetComponent<playerMovement>().LoseSceneLoad();
                 }
                 else if (hit.collider.CompareTag("Obstacle"))
                 {
@@ -63,5 +65,11 @@ public class Enemy : MonoBehaviour
         GetComponent<BoxCollider2D>().enabled = false;
         GetComponent<Rigidbody2D>().gravityScale = 0;
         Destroy(gameObject, 1.5f);
+    }
+
+    public void OutWorld()
+    {
+        transform.position = startloc;
+        dirX = startingDir;
     }
 }

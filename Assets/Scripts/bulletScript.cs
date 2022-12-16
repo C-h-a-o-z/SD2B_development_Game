@@ -23,17 +23,20 @@ public class bulletScript : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (exploding == true)
+        if (!collision.CompareTag("Player"))
         {
-            Debug.Log("boom");
-            GameObject spawnExplosion = Instantiate(explosion, transform.position, Quaternion.identity);
+            if (exploding == true)
+            {
+                Debug.Log("boom");
+                GameObject spawnExplosion = Instantiate(explosion, transform.position, Quaternion.identity);
 
+            }
+            if (collision.CompareTag("Enemy"))
+            {
+                collision.GetComponent<Enemy>().takeDamage();
+            }
+            Destroy(gameObject);
         }
-        if (collision.CompareTag("Enemy"))
-        {
-            collision.GetComponent<Enemy>().takeDamage();
-        }
-        Destroy(gameObject);
-        //USE CIRCLE COLLIDERSSSSSS
+        //USE CIRCLE COLLIDERSSSSSS 
     }
 }

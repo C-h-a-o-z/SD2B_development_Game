@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class playerMovement : MonoBehaviour
 {
@@ -15,14 +16,34 @@ public class playerMovement : MonoBehaviour
 	private Rigidbody2D rigBody2D;
 	private float facing = 1;
 	public GameObject bullet;
+	public GameObject explodingBullet;
+	public bool explodingBulletActive = false;
+	public float maxRegCooldown = 3;
+	public float maxExplodeCooldown = 8;
+	float regCooldown;
+	float explodeCooldown;
+	public GameObject regWeapon;
+	public GameObject RpgWeapon;
 
-    private void Awake()
+
+	private void Awake()
     {
 		rigBody2D = GetComponent<Rigidbody2D>();
     }
     // Update is called once per frame
     void Update()
     {
+		if (regCooldown >= 0)
+        {
+			regCooldown = regCooldown - 1 * Time.deltaTime;
+        }
+		if (explodeCooldown >= 0)
+		{
+			explodeCooldown = explodeCooldown - 1 * Time.deltaTime;
+		}
+
+
+
 
 
 		if (Input.GetKeyDown(KeyCode.Y))
@@ -45,15 +66,40 @@ public class playerMovement : MonoBehaviour
 
 			}
 
-
+		if (Input.GetKeyDown(KeyCode.T))
+        {
+			explodingBulletActive = !explodingBulletActive;
+        }
 			
+		if (explodingBulletActive)
+        {
+			regWeapon.GetComponent<SpriteRenderer>().enabled = false;
+			RpgWeapon.GetComponent<SpriteRenderer>().enabled = true;
+		}
+		else if (!explodingBulletActive)
+        {
+			regWeapon.GetComponent<SpriteRenderer>().enabled = true;
+			RpgWeapon.GetComponent<SpriteRenderer>().enabled = false;
+		}
+
 
         
 		if (Input.GetKeyDown(KeyCode.X))
         {
-			GameObject spawnedBullet = Instantiate(bullet, transform.position, Quaternion.identity);
-			spawnedBullet.GetComponent<bulletScript>().direction = facing;
-			spawnedBullet.transform.position = new Vector2(spawnedBullet.transform.position.x + facing, spawnedBullet.transform.position.y);
+			if (!explodingBulletActive && regCooldown <= 0)
+            {
+				GameObject spawnedBullet = Instantiate(bullet, transform.position, Quaternion.identity);
+				spawnedBullet.GetComponent<bulletScript>().direction = facing;
+				regCooldown = maxRegCooldown;
+			}
+			else if (explodingBulletActive && explodeCooldown <= 0)
+            {
+				GameObject spawnedBullet = Instantiate(explodingBullet, transform.position, Quaternion.identity);
+				spawnedBullet.GetComponent<bulletScript>().direction = facing;
+				explodeCooldown = maxExplodeCooldown;
+			}
+
+			//spawnedBullet.transform.position = new Vector2(spawnedBullet.transform.position.x + facing, spawnedBullet.transform.position.y);
         }
 
     }
@@ -67,6 +113,28 @@ public class playerMovement : MonoBehaviour
 			facing = dirX;
 		}
 
+		
+
+		if (dirX < 0)
+		{
+			gameObject.GetComponent<SpriteRenderer>().flipX = true;
+			regWeapon.GetComponent<SpriteRenderer>().flipX = true;
+			regWeapon.transform.position = new Vector2(gameObject.transform.position.x + -0.65f, regWeapon.transform.position.y);
+			RpgWeapon.GetComponent<SpriteRenderer>().flipX = true;
+			RpgWeapon.transform.position = new Vector2(gameObject.transform.position.x + -0.6f, RpgWeapon.transform.position.y);
+
+		}
+		else if (dirX > 0)
+        {
+			gameObject.GetComponent<SpriteRenderer>().flipX = false;
+			regWeapon.GetComponent<SpriteRenderer>().flipX = false;
+			regWeapon.transform.position = new Vector2(gameObject.transform.position.x + 0.65f, regWeapon.transform.position.y);
+			RpgWeapon.GetComponent<SpriteRenderer>().flipX = false;
+			RpgWeapon.transform.position = new Vector2(gameObject.transform.position.x + 0.6f, RpgWeapon.transform.position.y);
+		}
+
+
+
 		bool wasGrounded = onGround;
 		onGround = false;
 
@@ -79,5 +147,13 @@ public class playerMovement : MonoBehaviour
 				jumpAmount = 1;
 			}
 		}
+	}
+	public void LoseSceneLoad()
+	{
+		SceneManager.LoadScene("LoseScreen");
+	}
+	public void WinSceneLoad()
+	{
+		SceneManager.LoadScene("WinScreen");
 	}
 }
