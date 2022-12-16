@@ -10,6 +10,7 @@ public class Enemy : MonoBehaviour
     bool isAlive = true;
     public float startingDir = 1;
     private GameObject scoreCounter;
+    public AudioSource deathSound;
     Vector2 startloc;
 
 
@@ -21,7 +22,7 @@ public class Enemy : MonoBehaviour
         dirX = startingDir;
         anim = GetComponentInChildren<Animator>();
         scoreCounter = GameObject.Find("Player");
-        startloc = transform.localPosition;
+        startloc = transform.position;
     }
     // Update is called once per frame
     void Update()
@@ -59,6 +60,7 @@ public class Enemy : MonoBehaviour
     }
     void die()
     {
+        deathSound.Play();
         scoreCounter.GetComponent<Score>().scoreAdd();
         isAlive = false;
         anim.SetBool("IsAlive", isAlive);

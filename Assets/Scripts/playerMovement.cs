@@ -8,7 +8,8 @@ public class playerMovement : MonoBehaviour
 	[SerializeField] private LayerMask m_WhatIsGround;
 	[SerializeField] private Transform groundCheck;
 	public bool onGround = false;
-	//public AudioSource regShot;
+	public AudioSource regShot;
+	public AudioSource rpgShot;
 
 	public float speed = 10;
     public float jumpForce = 100;
@@ -89,13 +90,14 @@ public class playerMovement : MonoBehaviour
         {
 			if (!explodingBulletActive && regCooldown <= 0)
             {
-				//regShot.Play();
+				regShot.Play();
 				GameObject spawnedBullet = Instantiate(bullet, transform.position, Quaternion.identity);
 				spawnedBullet.GetComponent<bulletScript>().direction = facing;
 				regCooldown = maxRegCooldown;
 			}
 			else if (explodingBulletActive && explodeCooldown <= 0)
             {
+				rpgShot.Play();
 				GameObject spawnedBullet = Instantiate(explodingBullet, transform.position, Quaternion.identity);
 				spawnedBullet.GetComponent<bulletScript>().direction = facing;
 				explodeCooldown = maxExplodeCooldown;
