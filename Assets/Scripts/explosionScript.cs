@@ -9,7 +9,7 @@ public class explosionScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        transform.localScale -= new Vector3(3 * Time.deltaTime, 3 * Time.deltaTime, transform.position.z);
+        transform.localScale -= new Vector3(5 * Time.deltaTime, 5 * Time.deltaTime, transform.position.z);
         if(transform.localScale.x <= 0)
         {
             Destroy(gameObject);
@@ -22,6 +22,10 @@ public class explosionScript : MonoBehaviour
         {
             collision.GetComponent<Enemy>().hp = 0;
             collision.GetComponent<Enemy>().takeDamage();
+        }
+        else if(collision.CompareTag("Player"))
+        {
+            collision.GetComponent<playerMovement>().LoseSceneLoad();
         }
     }
 }

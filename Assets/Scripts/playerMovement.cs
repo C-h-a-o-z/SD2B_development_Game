@@ -8,6 +8,7 @@ public class playerMovement : MonoBehaviour
 	[SerializeField] private LayerMask m_WhatIsGround;
 	[SerializeField] private Transform groundCheck;
 	public bool onGround = false;
+	//public AudioSource regShot;
 
 	public float speed = 10;
     public float jumpForce = 100;
@@ -46,7 +47,7 @@ public class playerMovement : MonoBehaviour
 
 
 
-		if (Input.GetKeyDown(KeyCode.Y))
+		if (Input.GetKeyDown(KeyCode.Space))
         {
 			if (onGround == true)
 			{
@@ -66,7 +67,7 @@ public class playerMovement : MonoBehaviour
 
 			}
 
-		if (Input.GetKeyDown(KeyCode.T))
+		if (Input.GetKeyDown(KeyCode.LeftShift))
         {
 			explodingBulletActive = !explodingBulletActive;
         }
@@ -84,10 +85,11 @@ public class playerMovement : MonoBehaviour
 
 
         
-		if (Input.GetKeyDown(KeyCode.X))
+		if (Input.GetKeyDown(KeyCode.R))
         {
 			if (!explodingBulletActive && regCooldown <= 0)
             {
+				//regShot.Play();
 				GameObject spawnedBullet = Instantiate(bullet, transform.position, Quaternion.identity);
 				spawnedBullet.GetComponent<bulletScript>().direction = facing;
 				regCooldown = maxRegCooldown;

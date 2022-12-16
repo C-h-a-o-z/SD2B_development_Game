@@ -5,6 +5,7 @@ using UnityEngine;
 public class SoundExample : MonoBehaviour
 {
     public GameObject explosionEffect;
+    public float soundDuration;
     // Start is called before the first frame update
     void Start()
     {
@@ -23,6 +24,6 @@ public class SoundExample : MonoBehaviour
     void RunPInput()
     {
         Instantiate(explosionEffect, transform.position, transform.rotation);
-        Destroy(gameObject);
+        Destroy(gameObject, soundDuration);
     }
 }
