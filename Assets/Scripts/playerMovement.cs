@@ -11,6 +11,7 @@ public class playerMovement : MonoBehaviour
 	public AudioSource regShot;
 	public AudioSource rpgShot;
 
+	bool cinematicMode = false;
 	public float speed = 10;
     public float jumpForce = 100;
 	const float k_GroundedRadius = .2f;
@@ -47,108 +48,113 @@ public class playerMovement : MonoBehaviour
 
 
 
-
-		if (Input.GetKeyDown(KeyCode.Space))
-        {
-			if (onGround == true)
+		if (!cinematicMode)
+		{
+			if (Input.GetKeyDown(KeyCode.Space))
 			{
-				onGround = false;
-				rigBody2D.AddForce(new Vector2(0f, jumpForce));
+				if (onGround == true)
+				{
+					onGround = false;
+					rigBody2D.AddForce(new Vector2(0f, jumpForce));
+				}
+				else if (jumpAmount > 0)
+				{
+					jumpAmount = jumpAmount - 1;
+					rigBody2D.velocity = new Vector2(rigBody2D.velocity.x, 0);
+					rigBody2D.AddForce(new Vector2(0f, jumpForce));
+				}
+				else
+				{
+					Debug.Log("NoRemainingJumps");
+				}
+
 			}
-			else if (jumpAmount > 0)
+
+			if (Input.GetKeyDown(KeyCode.LeftShift))
 			{
-				jumpAmount = jumpAmount - 1;
-				rigBody2D.velocity = new Vector2(rigBody2D.velocity.x, 0);
-				rigBody2D.AddForce(new Vector2(0f, jumpForce));
-			}
-			else
-            {
-				Debug.Log("NoRemainingJumps");
-            }
-
+				explodingBulletActive = !explodingBulletActive;
 			}
 
-		if (Input.GetKeyDown(KeyCode.LeftShift))
-        {
-			explodingBulletActive = !explodingBulletActive;
-        }
-			
-		if (explodingBulletActive)
-        {
-			regWeapon.GetComponent<SpriteRenderer>().enabled = false;
-			RpgWeapon.GetComponent<SpriteRenderer>().enabled = true;
+			if (explodingBulletActive)
+			{
+				regWeapon.GetComponent<SpriteRenderer>().enabled = false;
+				RpgWeapon.GetComponent<SpriteRenderer>().enabled = true;
+			}
+			else if (!explodingBulletActive)
+			{
+				regWeapon.GetComponent<SpriteRenderer>().enabled = true;
+				RpgWeapon.GetComponent<SpriteRenderer>().enabled = false;
+			}
+
+
+
+			if (Input.GetKeyDown(KeyCode.R))
+			{
+				if (!explodingBulletActive && regCooldown <= 0)
+				{
+					regShot.Play();
+					GameObject spawnedBullet = Instantiate(bullet, transform.position, Quaternion.identity);
+					spawnedBullet.GetComponent<bulletScript>().direction = facing;
+					regCooldown = maxRegCooldown;
+				}
+				else if (explodingBulletActive && explodeCooldown <= 0)
+				{
+					rpgShot.Play();
+					GameObject spawnedBullet = Instantiate(explodingBullet, transform.position, Quaternion.identity);
+					spawnedBullet.GetComponent<bulletScript>().direction = facing;
+					explodeCooldown = maxExplodeCooldown;
+				}
+
+				//spawnedBullet.transform.position = new Vector2(spawnedBullet.transform.position.x + facing, spawnedBullet.transform.position.y);
+			}
 		}
-		else if (!explodingBulletActive)
-        {
-			regWeapon.GetComponent<SpriteRenderer>().enabled = true;
-			RpgWeapon.GetComponent<SpriteRenderer>().enabled = false;
-		}
-
-
-        
-		if (Input.GetKeyDown(KeyCode.R))
-        {
-			if (!explodingBulletActive && regCooldown <= 0)
-            {
-				regShot.Play();
-				GameObject spawnedBullet = Instantiate(bullet, transform.position, Quaternion.identity);
-				spawnedBullet.GetComponent<bulletScript>().direction = facing;
-				regCooldown = maxRegCooldown;
-			}
-			else if (explodingBulletActive && explodeCooldown <= 0)
-            {
-				rpgShot.Play();
-				GameObject spawnedBullet = Instantiate(explodingBullet, transform.position, Quaternion.identity);
-				spawnedBullet.GetComponent<bulletScript>().direction = facing;
-				explodeCooldown = maxExplodeCooldown;
-			}
-
-			//spawnedBullet.transform.position = new Vector2(spawnedBullet.transform.position.x + facing, spawnedBullet.transform.position.y);
-        }
 
     }
 	private void FixedUpdate()
 	{
-		float dirX = Input.GetAxisRaw("Horizontal");
-		transform.Translate(transform.right * dirX * speed * Time.deltaTime);
-
-		if (dirX < 0 || dirX > 0)
+		if (!cinematicMode)
 		{
-			facing = dirX;
-		}
+			float dirX = Input.GetAxisRaw("Horizontal");
+			transform.Translate(transform.right * dirX * speed * Time.deltaTime);
 
-		
-
-		if (dirX < 0)
-		{
-			gameObject.GetComponent<SpriteRenderer>().flipX = true;
-			regWeapon.GetComponent<SpriteRenderer>().flipX = true;
-			regWeapon.transform.position = new Vector2(gameObject.transform.position.x + -0.65f, regWeapon.transform.position.y);
-			RpgWeapon.GetComponent<SpriteRenderer>().flipX = true;
-			RpgWeapon.transform.position = new Vector2(gameObject.transform.position.x + -0.6f, RpgWeapon.transform.position.y);
-
-		}
-		else if (dirX > 0)
-        {
-			gameObject.GetComponent<SpriteRenderer>().flipX = false;
-			regWeapon.GetComponent<SpriteRenderer>().flipX = false;
-			regWeapon.transform.position = new Vector2(gameObject.transform.position.x + 0.65f, regWeapon.transform.position.y);
-			RpgWeapon.GetComponent<SpriteRenderer>().flipX = false;
-			RpgWeapon.transform.position = new Vector2(gameObject.transform.position.x + 0.6f, RpgWeapon.transform.position.y);
-		}
-
-
-
-		bool wasGrounded = onGround;
-		onGround = false;
-
-		Collider2D[] colliders = Physics2D.OverlapCircleAll(groundCheck.position, k_GroundedRadius, m_WhatIsGround);
-		for (int i = 0; i < colliders.Length; i++)
-		{
-			if (colliders[i].gameObject != gameObject)
+			if (dirX < 0 || dirX > 0)
 			{
-				onGround = true;
-				jumpAmount = 1;
+				facing = dirX;
+			}
+
+
+
+			if (dirX < 0)
+			{
+				gameObject.GetComponent<SpriteRenderer>().flipX = true;
+				regWeapon.GetComponent<SpriteRenderer>().flipX = true;
+				regWeapon.transform.position = new Vector2(gameObject.transform.position.x + -0.65f, regWeapon.transform.position.y);
+				RpgWeapon.GetComponent<SpriteRenderer>().flipX = true;
+				RpgWeapon.transform.position = new Vector2(gameObject.transform.position.x + -0.6f, RpgWeapon.transform.position.y);
+
+			}
+			else if (dirX > 0)
+			{
+				gameObject.GetComponent<SpriteRenderer>().flipX = false;
+				regWeapon.GetComponent<SpriteRenderer>().flipX = false;
+				regWeapon.transform.position = new Vector2(gameObject.transform.position.x + 0.65f, regWeapon.transform.position.y);
+				RpgWeapon.GetComponent<SpriteRenderer>().flipX = false;
+				RpgWeapon.transform.position = new Vector2(gameObject.transform.position.x + 0.6f, RpgWeapon.transform.position.y);
+			}
+
+
+
+			bool wasGrounded = onGround;
+			onGround = false;
+
+			Collider2D[] colliders = Physics2D.OverlapCircleAll(groundCheck.position, k_GroundedRadius, m_WhatIsGround);
+			for (int i = 0; i < colliders.Length; i++)
+			{
+				if (colliders[i].gameObject != gameObject)
+				{
+					onGround = true;
+					jumpAmount = 1;
+				}
 			}
 		}
 	}
@@ -159,5 +165,9 @@ public class playerMovement : MonoBehaviour
 	public void WinSceneLoad()
 	{
 		SceneManager.LoadScene("WinScreen");
+	}
+	public void CinematicModeTrigger(bool cinMode)
+	{
+		cinematicMode = cinMode;
 	}
 }
